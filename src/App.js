@@ -7,27 +7,54 @@ import { connect } from 'react-redux';
 import Auth from './Pages/Auth/Auth';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Movie from './Pages/Movie/Movie';
+import Signin from './Pages/Signin/Signin';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-function App({firebaseAuthListner}) {
+// Or Create your Own theme:
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#25CCF7'
+    },
+    secondary: {
+      main: '#BA2F16'
+    },
+    light: {
+      main: '#BA2F16'
+    }
+  }
+});
 
+function App({firebaseAuthListner, auth}) {
   useEffect(() => {
     firebaseAuthListner()
+    console.log(auth)
   }, [])
 
   return (
-    <div>
+    <MuiThemeProvider theme={theme}>
       <Switch>
-        <Route path="/" component={Home} exact />
+        <Route path="/" component={auth ? Home:Signin} exact />
         <Route path="/auth" component={Auth} exact/>
         <Route path="/dashboard/:userId" component={Dashboard} exact/>
         <Route path="/movie/:movieId" component={Movie} exact/>
+        <Route path="*">
+          <h1>404 Not Found</h1>
+        </Route>
       </Switch>
-    </div>
+    </MuiThemeProvider>
+    
   );
+}
+
+var mapStatesToProps = (state) => {
+  return {
+    auth: state.auth
+  }
 }
 
 var actions = {
   firebaseAuthListner
 }
 
-export default connect(null,actions)(App);
+export default connect(mapStatesToProps,actions)(App);

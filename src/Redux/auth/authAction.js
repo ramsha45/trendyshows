@@ -81,11 +81,9 @@ export var firebaseAuthListner = () => async (dispatch) => {
         firebase.auth().onAuthStateChanged(async function(user){
             if (user){
                 var {uid} = user
-                console.log(user)
 
                 //fetch user data from firestore
                 var userData = await firestore.collection("users").doc(uid).get()
-                console.log(userData.data())
                 var {fullName,email} = userData.data()
 
                 //set user data to auth state
@@ -99,7 +97,6 @@ export var firebaseAuthListner = () => async (dispatch) => {
             }
             else{
                 dispatch(removeUser())
-                console.log("null")
             }
         }) 
     } catch (error) {
