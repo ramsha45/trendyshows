@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 import { handleThemeMode } from "../Redux/siteMode/siteModeActions";
 const useStyles = makeStyles({
   root: {
-    backgroundColor: "rgba(0,0,0, 0.8)",
     minHeight: "100vh",
     height: "100%",
     maxHeight: "min-content",
@@ -24,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-function AuthView({ children, currentMode, handleThemeMode }) {
+function AuthView({ children, currentMode, handleThemeMode, ...props }) {
   const classes = useStyles();
   return (
     <>
@@ -33,6 +32,7 @@ function AuthView({ children, currentMode, handleThemeMode }) {
         className={classes.root}
         justify="center"
         alignItems="center"
+        style={{ backgroundColor: currentMode ? "rgba(0,0,0, 0.8)" : "white" }}
       >
         <Grid
           container
@@ -55,7 +55,9 @@ function AuthView({ children, currentMode, handleThemeMode }) {
               control={
                 <Switch
                   checked={currentMode}
-                  onChange={()=>{handleThemeMode(!currentMode)}}
+                  onChange={() => {
+                    handleThemeMode(!currentMode);
+                  }}
                   name="mode"
                   color="secondary"
                 />
