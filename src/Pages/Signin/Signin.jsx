@@ -6,8 +6,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
+import { handleNavigation } from "../../Utility/common";
 import AuthView from "../../Views/AuthView";
-
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles({
   fieldInputColor: {
     // color:'#ffffff'
@@ -16,9 +17,10 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
 });
-
 function Signin() {
   const classes = useStyles();
+  const history = useHistory();
+
   return (
     <AuthView>
       <Grid item xs={12} lg={8}>
@@ -58,6 +60,9 @@ function Signin() {
             variant="body"
             color="secondary"
             className={classes.pointer}
+            onClick={() => {
+              handleNavigation("/signup",history);
+            }}
           >
             Signup
           </Typography>{" "}

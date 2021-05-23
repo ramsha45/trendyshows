@@ -9,8 +9,9 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import Movie from './Pages/Movie/Movie';
 import Signin from './Pages/Signin/Signin';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Signup from './Pages/Signup/Signup';
 
-// Or Create your Own theme:
+// Create your Own theme:
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -19,22 +20,19 @@ const theme = createMuiTheme({
     secondary: {
       main: '#BA2F16'
     },
-    light: {
-      main: '#BA2F16'
-    }
   }
 });
 
 function App({firebaseAuthListner, auth}) {
   useEffect(() => {
     firebaseAuthListner()
-    console.log(auth)
   }, [])
 
   return (
     <MuiThemeProvider theme={theme}>
       <Switch>
         <Route path="/" component={auth ? Home:Signin} exact />
+        <Route path="/signup" component={auth ? Home:Signup} exact />
         <Route path="/auth" component={Auth} exact/>
         <Route path="/dashboard/:userId" component={Dashboard} exact/>
         <Route path="/movie/:movieId" component={Movie} exact/>
