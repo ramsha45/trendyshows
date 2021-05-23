@@ -1,11 +1,20 @@
-import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
+import {
+  Box,
+  FormControlLabel,
+  Grid,
+  makeStyles,
+  Switch,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
-
+import { connect } from "react-redux";
+import { handleThemeMode } from "../Redux/siteMode/siteModeActions";
 const useStyles = makeStyles({
   root: {
     backgroundColor: "rgba(0,0,0, 0.8)",
-    height: "100vh",
-    overflow: "hidden",
+    minHeight: "100vh",
+    height: "100%",
+    maxHeight: "min-content",
     width: "100%",
   },
   authBox: {
@@ -15,9 +24,8 @@ const useStyles = makeStyles({
   },
 });
 
-function AuthView({ children }) {
+function AuthView({ children, currentMode, handleThemeMode }) {
   const classes = useStyles();
-
   return (
     <>
       <Grid
@@ -34,7 +42,7 @@ function AuthView({ children }) {
           className={classes.authBox}
           justify="center"
           alignItems="center"
-          spacing={5}
+          spacing={2}
         >
           <Grid container item xs={12} justify="center">
             <Typography variant="h2" color="secondary" align="center">
@@ -42,10 +50,31 @@ function AuthView({ children }) {
             </Typography>
           </Grid>
           {children}
+          <Grid container item xs={12} justify="center">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={currentMode}
+                  onChange={()=>{handleThemeMode(!currentMode)}}
+                  name="mode"
+                  color="secondary"
+                />
+              }
+              label="Switch Theme"
+            />
+          </Grid>
         </Grid>
       </Grid>
     </>
   );
 }
 
-export default AuthView;
+var mapStateToProps = (state) => {
+  return {
+    currentMode: state.themeMode.mode,
+  };
+};
+var actions = {
+  handleThemeMode,
+};
+export default connect(mapStateToProps, actions)(AuthView);
