@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { handleNavigation } from "../../Utility/common";
 import AuthView from "../../Views/AuthView";
 import { useHistory } from "react-router-dom";
@@ -21,15 +21,32 @@ function Signin() {
   const classes = useStyles();
   const history = useHistory();
 
+  // make sure to follow the correct(camelCase) convention e.g setEmail
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+  })
+  const {email, password} = credentials
+  const handleFormInput = (e) => {
+    const {name, value} = e.target
+    setCredentials((prevState)=>({
+      [name] : value
+    }))
+  }
+
+// Integrate signup functioanlity and reroute to "/"
   return (
     <AuthView>
       <Grid item xs={12} lg={8}>
         <TextField
           variant="filled"
           id="email"
-          label="Email/UserName"
+          label="Email"
           fullWidth
+          name="email"
+          value={email}
           color="primary"
+          onChange={(e)=>{handleFormInput(e)}}
           InputProps={{
             className: classes.fieldInputColor,
           }}
@@ -42,10 +59,14 @@ function Signin() {
           type="password"
           label="Passcode"
           fullWidth
+          name="password"
+          value={password}
+          onChange={(e)=>{handleFormInput(e)}}
           color="primary"
           InputProps={{
             className: classes.fieldInputColor,
           }}
+          inputProps={{minLength :6}}
         />
       </Grid>
       <Grid item xs={12} lg={8}>
