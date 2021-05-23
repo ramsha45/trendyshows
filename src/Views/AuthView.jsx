@@ -62,7 +62,7 @@ function AuthView({ children, currentMode, handleThemeMode, ...props }) {
                   color="secondary"
                 />
               }
-              label="Switch Theme"
+              label={currentMode ? `Dark Mode` : `Light Mode` }
             />
           </Grid>
         </Grid>
