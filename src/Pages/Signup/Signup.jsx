@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import { handleNavigation } from "../../Utility/common";
 import { connect } from "react-redux";
 import { signup} from "../../Redux/auth/authAction";
+import { handleLoader } from "../../Redux/siteMode/siteModeActions";
 
 const useStyles = makeStyles({
   fieldInputColor: {
@@ -110,9 +111,8 @@ const handleFormInput = (e) => {
       </Grid>
       <Grid item xs={12} lg={8}>
         <Button variant="contained" color="secondary" fullWidth onClick={() => {
-          console.log(credentials)
+          handleLoader(true)
           signup(credentials)
-          console.log("signup")
         }}>
           Signup
         </Button>
@@ -138,7 +138,8 @@ const handleFormInput = (e) => {
 }
 
 var action = {
-  signup
+  signup,
+  handleLoader,
 }
 
 export default connect(null, action)(Signup);

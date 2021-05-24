@@ -1,9 +1,12 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {auth} from '../../Firebase/Firebase'
-
-const Home = () => {
-    console.log(auth)
+import {handleLoader } from "../../Redux/siteMode/siteModeActions"
+const Home = ({handleLoader}) => {
+    useEffect(() => {
+        handleLoader(false)
+    }, [])
     return (
         <div>
             <h1>Home Page</h1>
@@ -14,4 +17,7 @@ const Home = () => {
     )
 }
 
-export default Home
+var actions = {
+    handleLoader
+}
+export default connect(null,actions)(Home)

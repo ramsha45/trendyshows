@@ -1,1 +1,2 @@
 export const HANDLE_MODE = "HANDLE_MODE" 
+export const HANDLE_LOADER = "HANDLE_LOADER"

@@ -15,9 +15,6 @@ export var removeUser = () => ({
 })
 
 export var  signup = ({userName, email,password}) => async (dispatch) => {
-    console.log(userName);
-    console.log(email);
-    console.log(password);
     try {
         //create user on firebase auth section
         var {user :{uid}} = await auth.createUserWithEmailAndPassword(email,password)

@@ -11,7 +11,7 @@ import AuthView from "../../Views/AuthView";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { signin } from "../../Redux/auth/authAction";
-
+import { handleLoader } from "../../Redux/siteMode/siteModeActions";
 const useStyles = makeStyles({
   fieldInputColor: {
     // color:'#ffffff'
@@ -20,25 +20,25 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
 });
-function Signin({signin}) {
+function Signin({ signin, handleLoader }) {
   const classes = useStyles();
   const history = useHistory();
 
   // make sure to follow the correct(camelCase) convention e.g setEmail
   const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
-  })
-  const {email, password} = credentials
+    email: "",
+    password: "",
+  });
+  const { email, password } = credentials;
   const handleFormInput = (e) => {
-    const {name, value} = e.target
-    setCredentials((prevState)=>({
+    const { name, value } = e.target;
+    setCredentials((prevState) => ({
       ...prevState,
-      [name] : value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
-// Integrate signup functioanlity and reroute to "/"
+  // Integrate signup functioanlity and reroute to "/"
   return (
     <AuthView>
       <Grid item xs={12} lg={8}>
@@ -50,7 +50,9 @@ function Signin({signin}) {
           name="email"
           value={email}
           color="primary"
-          onChange={(e)=>{handleFormInput(e)}}
+          onChange={(e) => {
+            handleFormInput(e);
+          }}
           InputProps={{
             className: classes.fieldInputColor,
           }}
@@ -65,18 +67,26 @@ function Signin({signin}) {
           fullWidth
           name="password"
           value={password}
-          onChange={(e)=>{handleFormInput(e)}}
+          onChange={(e) => {
+            handleFormInput(e);
+          }}
           color="primary"
           InputProps={{
             className: classes.fieldInputColor,
           }}
-          inputProps={{minLength :6}}
+          inputProps={{ minLength: 6 }}
         />
       </Grid>
       <Grid item xs={12} lg={8}>
-        <Button variant="contained" color="secondary" fullWidth onClick={() => {
-          signin(credentials)
-        }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          fullWidth
+          onClick={() => {
+            handleLoader(true)
+            signin(credentials);
+          }}
+        >
           Login
         </Button>
       </Grid>
@@ -88,7 +98,7 @@ function Signin({signin}) {
             color="secondary"
             className={classes.pointer}
             onClick={() => {
-              handleNavigation("/signup",history);
+              handleNavigation("/signup", history);
             }}
           >
             Signup
@@ -100,7 +110,8 @@ function Signin({signin}) {
 }
 
 var actions = {
-  signin
-}
+  signin,
+  handleLoader,
+};
 
-export default connect(null,actions)(Signin);
+export default connect(null, actions)(Signin);
