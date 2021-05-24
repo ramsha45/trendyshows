@@ -9,6 +9,9 @@ import React, { useState } from "react";
 import { handleNavigation } from "../../Utility/common";
 import AuthView from "../../Views/AuthView";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { signin } from "../../Redux/auth/authAction";
+
 const useStyles = makeStyles({
   fieldInputColor: {
     // color:'#ffffff'
@@ -17,7 +20,7 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
 });
-function Signin() {
+function Signin({signin}) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -30,6 +33,7 @@ function Signin() {
   const handleFormInput = (e) => {
     const {name, value} = e.target
     setCredentials((prevState)=>({
+      ...prevState,
       [name] : value
     }))
   }
@@ -70,7 +74,9 @@ function Signin() {
         />
       </Grid>
       <Grid item xs={12} lg={8}>
-        <Button variant="contained" color="secondary" fullWidth>
+        <Button variant="contained" color="secondary" fullWidth onClick={() => {
+          signin(credentials)
+        }}>
           Login
         </Button>
       </Grid>
@@ -93,4 +99,8 @@ function Signin() {
   );
 }
 
-export default Signin;
+var actions = {
+  signin
+}
+
+export default connect(null,actions)(Signin);
