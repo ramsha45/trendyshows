@@ -9,6 +9,8 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { handleNavigation } from "../../Utility/common";
+import { connect } from "react-redux";
+import { signup} from "../../Redux/auth/authAction";
 
 const useStyles = makeStyles({
   fieldInputColor: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
 });
-function Signup() {
+function Signup({signup}) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -33,6 +35,7 @@ const {email, password, confirmPassword, userName} = credentials
 const handleFormInput = (e) => {
   const {name, value} = e.target
   setCredentials((prevState)=>({
+    ...prevState,
     [name] : value
   }))
 }
@@ -106,7 +109,11 @@ const handleFormInput = (e) => {
         />
       </Grid>
       <Grid item xs={12} lg={8}>
-        <Button variant="contained" color="secondary" fullWidth>
+        <Button variant="contained" color="secondary" fullWidth onClick={() => {
+          console.log(credentials)
+          signup(credentials)
+          console.log("signup")
+        }}>
           Signup
         </Button>
       </Grid>
@@ -130,4 +137,8 @@ const handleFormInput = (e) => {
   );
 }
 
-export default Signup;
+var action = {
+  signup
+}
+
+export default connect(null, action)(Signup);

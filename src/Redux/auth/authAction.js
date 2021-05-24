@@ -14,14 +14,17 @@ export var removeUser = () => ({
     type: REMOVE_USER
 })
 
-export var  signup = ({fullName, email,password}) => async (dispatch) => {
+export var  signup = ({userName, email,password}) => async (dispatch) => {
+    console.log(userName);
+    console.log(email);
+    console.log(password);
     try {
         //create user on firebase auth section
         var {user :{uid}} = await auth.createUserWithEmailAndPassword(email,password)
                 
         //save user data to firestore
          var userInfo = {
-             fullName,
+             userName,
              email,
              createdAt: serverTimestamp()
          }
@@ -61,7 +64,7 @@ export var googleSignin = () => async (dispatch) => {
         //if new user add to signup
         if(isNewUser){
             var userInfo = {
-                fullName: displayName,
+                userName: displayName,
                 email,
                 createdAt: serverTimestamp()
             }
@@ -84,11 +87,11 @@ export var firebaseAuthListner = () => async (dispatch) => {
 
                 //fetch user data from firestore
                 var userData = await firestore.collection("users").doc(uid).get()
-                var {fullName,email} = userData.data()
+                var {userName,email} = userData.data()
 
                 //set user data to auth state
                 var userDataForState = {
-                    fullName,
+                    userName,
                     email,
                     uid
                 }
