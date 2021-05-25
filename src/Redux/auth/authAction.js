@@ -39,7 +39,7 @@ export var signin = ({email,password}) => async (dispatch) => {
         await auth.signInWithEmailAndPassword(email,password)
         // history.push("/")
     } catch (error) {
-        console.log(error)
+        return error.message
     }
 }
 

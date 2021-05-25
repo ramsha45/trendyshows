@@ -1,6 +1,8 @@
 import {
   Button,
+  Chip,
   Grid,
+  IconButton,
   makeStyles,
   TextField,
   Typography,
@@ -12,6 +14,9 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { signin } from "../../Redux/auth/authAction";
 import { handleLoader } from "../../Redux/siteMode/siteModeActions";
+import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
+
 const useStyles = makeStyles({
   fieldInputColor: {
     // color:'#ffffff'
@@ -24,6 +29,7 @@ function Signin({ signin, handleLoader }) {
   const classes = useStyles();
   const history = useHistory();
 
+  const [formErrors, setFormErrors] = useState(null);
   // make sure to follow the correct(camelCase) convention e.g setEmail
   const [credentials, setCredentials] = useState({
     email: "",
@@ -37,10 +43,38 @@ function Signin({ signin, handleLoader }) {
       [name]: value,
     }));
   };
+  const handleSignin = async () => {
+    handleLoader(true);
+    const message = await signin(credentials);
+    if (message) {
+      setFormErrors(message);
+      handleLoader(false);
+    }
+  };
+  
+  const clearErrors = () => {
+    setFormErrors(null)
+  }
 
   // Integrate signup functioanlity and reroute to "/"
   return (
     <AuthView>
+      <Grid container item xs={12} style={{overflow: "hidden"}} justify="center">
+        {formErrors ? (
+          <Alert severity="error" action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={clearErrors}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }>{formErrors}</Alert>
+        ) : (
+          ""
+        )}
+      </Grid>
       <Grid item xs={12} lg={8}>
         <TextField
           variant="filled"
@@ -83,8 +117,7 @@ function Signin({ signin, handleLoader }) {
           color="secondary"
           fullWidth
           onClick={() => {
-            handleLoader(true)
-            signin(credentials);
+            handleSignin();
           }}
         >
           Login
