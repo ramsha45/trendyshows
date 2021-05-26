@@ -29,7 +29,7 @@ export var  signup = ({userName, email,password}) => async (dispatch) => {
         //After signup navivgate to home page
         // history.push("/")
     } catch (error) {
-        console.log(error)
+        return error.message
     }
 }
 
@@ -39,7 +39,7 @@ export var signin = ({email,password}) => async (dispatch) => {
         await auth.signInWithEmailAndPassword(email,password)
         // history.push("/")
     } catch (error) {
-        console.log(error)
+        return error.message
     }
 }
 
