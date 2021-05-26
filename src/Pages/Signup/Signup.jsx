@@ -9,12 +9,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { handleNavigation } from "../../Utility/common";
+import { handleNavigation, isEmpty } from "../../Utility/common";
 import { connect } from "react-redux";
 import { signup } from "../../Redux/auth/authAction";
 import { handleLoader } from "../../Redux/siteMode/siteModeActions";
 import Alert from "@material-ui/lab/Alert";
 import CloseIcon from '@material-ui/icons/Close';
+import { confirmPasswordMatched, valid } from "../../Utility/validation";
 
 const useStyles = makeStyles({
   fieldInputColor: {
@@ -36,6 +37,7 @@ function Signup({ signup }) {
     confirmPassword: "",
   });
   const { email, password, confirmPassword, userName } = credentials;
+  
   const handleFormInput = (e) => {
     const { name, value } = e.target;
     setCredentials((prevState) => ({
@@ -43,13 +45,23 @@ function Signup({ signup }) {
       [name]: value,
     }));
   };
+  
   const handleSignup = async () => {
-    handleLoader(true);
-    const message = await signup(credentials);
-    if (message) {
-      setFormErrors(message);
-      handleLoader(false);
-    }
+      if(valid(credentials)){
+        if(confirmPasswordMatched(credentials.password, credentials.confirmPassword)){
+          handleLoader(true);
+          const message = await signup(credentials);
+          if (message) {
+            setFormErrors(message);
+            handleLoader(false);
+          }
+        }else{
+          setFormErrors("Confirm Password not matched")
+        }
+      }
+      else{
+        setFormErrors("All fields must be filled")
+      }
   };
 
   const clearErrors = () => {
