@@ -15,6 +15,7 @@ import { signin } from "../../Redux/auth/authAction";
 import { handleLoader } from "../../Redux/siteMode/siteModeActions";
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
+import { valid } from "../../Utility/validation";
 
 const useStyles = makeStyles({
   fieldInputColor: {
@@ -43,11 +44,15 @@ function Signin({ signin, handleLoader }) {
     }));
   };
   const handleSignin = async () => {
-    handleLoader(true);
-    const message = await signin(credentials);
-    if (message) {
-      setFormErrors(message);
-      handleLoader(false);
+    if(valid(credentials)){
+      handleLoader(true);
+      const message = await signin(credentials);
+      if (message) {
+        setFormErrors(message);
+        handleLoader(false);
+      }
+    }else{
+      setFormErrors("All fields must be filled")
     }
   };
   
