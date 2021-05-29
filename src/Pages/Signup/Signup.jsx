@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { handleNavigation, isEmpty } from "../../Utility/common";
+import { handleNavigation } from "../../Utility/common";
 import { connect } from "react-redux";
 import { signup } from "../../Redux/auth/authAction";
 import { handleLoader } from "../../Redux/siteMode/siteModeActions";

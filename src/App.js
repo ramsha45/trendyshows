@@ -13,6 +13,7 @@ import Signup from './Pages/Signup/Signup';
 import { useState } from 'react';
 import Loader from './Components/Loader/Loader';
 import { handleLoader } from "./Redux/siteMode/siteModeActions"
+import User from './Pages/User/User';
 // Create your Own theme:
 const theme = createMuiTheme({
   palette: {
@@ -21,7 +22,7 @@ const theme = createMuiTheme({
     },
     secondary: {
       main: '#BA2F16'
-    },
+    }
   }
 });
 
@@ -35,6 +36,7 @@ function App({firebaseAuthListner, auth, isLoading, handleLoader}) {
         <Switch>
           <Route path="/" component={auth ? Home:Signin} exact />
           <Route path="/signup" component={auth ? Home:Signup} exact />
+          <Route path="/user" component={User} exact/>
           <Route path="/auth" component={Auth} exact/>
           <Route path="/dashboard/:userId" component={Dashboard} exact/>
           <Route path="/movie/:movieId" component={Movie} exact/>
