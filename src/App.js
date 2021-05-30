@@ -37,8 +37,8 @@ function App({firebaseAuthListner, auth, isLoading, handleLoader}) {
           <Route path="/" component={auth ? Home:Signin} exact />
           <Route path="/signup" component={auth ? Home:Signup} exact />
           <Route path="/user" component={User} exact/>
+          <Route path="/dashboard" component={Dashboard} exact/>
           <Route path="/auth" component={Auth} exact/>
-          <Route path="/dashboard/:userId" component={Dashboard} exact/>
           <Route path="/movie/:movieId" component={Movie} exact/>
           <Route path="*">
             <h1>404 Not Found</h1>

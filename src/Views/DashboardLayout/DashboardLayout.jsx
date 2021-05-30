@@ -1,8 +1,5 @@
-import React from "react";
 import {
   AppBar,
-  Button,
-  fade,
   Grid,
   IconButton,
   InputBase,
@@ -10,13 +7,15 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
+import React from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import CenterFocusWeakIcon from "@material-ui/icons/CenterFocusWeak";
 import { useHistory } from "react-router-dom";
 import { handleNavigation } from "../../Utility/common";
-import { signout } from "../../Redux/auth/authAction";
-import { connect } from "react-redux";
-
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import PowerSettingsNewOutlinedIcon from "@material-ui/icons/PowerSettingsNewOutlined";
+import FilterDropdown from "../../Components/FilterDropdown";
+import SearchDropdown from "../../Components/SearchDropdown";
 const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -27,14 +26,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },
+    marginLeft: theme.spacing(40),
   },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
+    backgroundColor: "rgba(202,201,201, 0.1)",
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
@@ -68,39 +65,42 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   navItem: {
-    color: "#ffffff",
+    color: "#000000",
   },
   children: {
     backgroundColor: "#BA2F16",
   },
+  filterAppBar: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
-function MainLayout({ signout, children }) {
+function DashboardLayout({ children }) {
   const classes = useStyles();
   const history = useHistory();
-
   return (
     <>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" color="transparent">
         <Toolbar>
           <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
-            onClick={()=>{handleNavigation('/dashboard',history)}}
+            onClick={() => {
+              handleNavigation("/dashboard", history);
+            }}
           >
             <CenterFocusWeakIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Trendy Shows
-          </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Films, Actors"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -108,17 +108,38 @@ function MainLayout({ signout, children }) {
               inputProps={{ "aria-label": "search" }}
             />
           </div>
-          <Button
+          <Typography className={classes.title} variant="h6" noWrap>
+            Trendy Shows
+          </Typography>
+          <IconButton
             className={classes.navItem}
             onClick={() => {
               handleNavigation("/user", history);
             }}
           >
-            Profile
-          </Button>
-          <Button className={classes.navItem} onClick={signout}>
-            Signout
-          </Button>
+            <AccountCircleOutlinedIcon />
+          </IconButton>
+          <IconButton
+            className={classes.navItem}
+            onClick={() => {
+              handleNavigation("/user", history);
+            }}
+          >
+            <PowerSettingsNewOutlinedIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <AppBar position="static" color="secondary">
+        <Toolbar className={classes.filterAppBar}>
+          <FilterDropdown
+            name="Genre"
+            list={["horror", "comedy", "action", "Adventrue"]}
+          />
+          <SearchDropdown/>
+          <FilterDropdown
+            name="Industry"
+            list={["Hollywood", "Bollywood"]}
+          />
         </Toolbar>
       </AppBar>
       <Grid container justify="center" className={classes.children}>
@@ -128,7 +149,5 @@ function MainLayout({ signout, children }) {
   );
 }
 
-var actions = {
-  signout,
-};
-export default connect(null, actions)(MainLayout);
+export default DashboardLayout;
+
