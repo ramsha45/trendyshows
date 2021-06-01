@@ -26,8 +26,6 @@ export var  signup = ({userName, email,password}) => async (dispatch) => {
              createdAt: serverTimestamp()
          }
         await firestore.collection("users").doc(uid).set(userInfo)
-        //After signup navivgate to home page
-        // history.push("/")
     } catch (error) {
         return error.message
     }
@@ -37,7 +35,6 @@ export var signin = ({email,password}) => async (dispatch) => {
     try {
         //signin user with auth
         await auth.signInWithEmailAndPassword(email,password)
-        // history.push("/")
     } catch (error) {
         return error.message
     }
@@ -66,7 +63,6 @@ export var googleSignin = () => async (dispatch) => {
                 createdAt: serverTimestamp()
             }
            await firestore.collection("users").doc(uid).set(userInfo)
-        //    history.push("/")
         }
         
     } catch (error) {
@@ -93,7 +89,7 @@ export var firebaseAuthListner = () => async (dispatch) => {
                     uid
                 }
                 dispatch(setUser(userDataForState))
-                history.push(`/dashboard/${uid}`)
+                // history.push(`/dashboard/${uid}`)
             }
             else{
                 dispatch(removeUser())
