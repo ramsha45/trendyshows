@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 function MovieCard({ movie }) {
   const classes = useStyles();
-  console.log(movie);
   return (
     <Card className={classes.root}>
       <CardActionArea>

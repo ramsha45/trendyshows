@@ -8,7 +8,6 @@ import { Grid } from '@material-ui/core';
 function Dashboard({movies, fetchMovies}) {
     
     useEffect(() => {
-        // console.log(movies)    
     }, [movies])
     return ( <DashboardLayout >
             <Grid container justify="center" spacing={5}>

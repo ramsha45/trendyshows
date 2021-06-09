@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#ffffff",
   },
   children: {
-    backgroundColor: "#BA2F16",
+    // backgroundColor: "#BA2F16",
   },
 }));
 
@@ -113,7 +113,7 @@ function MainLayout({ signout, children }) {
               handleNavigation("/user", history);
             }}
           >
-            Profile
+            Security
           </Button>
           <Button className={classes.navItem} onClick={signout}>
             Signout
