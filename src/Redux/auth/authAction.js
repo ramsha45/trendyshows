@@ -89,7 +89,7 @@ export var firebaseAuthListner = () => async (dispatch) => {
                     uid
                 }
                 dispatch(setUser(userDataForState))
-                // history.push(`/dashboard/${uid}`)
+                history.push(`/dashboard`)
             }
             else{
                 dispatch(removeUser())

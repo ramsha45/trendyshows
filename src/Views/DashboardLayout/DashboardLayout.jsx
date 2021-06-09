@@ -7,7 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import CenterFocusWeakIcon from "@material-ui/icons/CenterFocusWeak";
 import { useHistory } from "react-router-dom";
@@ -16,6 +16,9 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import PowerSettingsNewOutlinedIcon from "@material-ui/icons/PowerSettingsNewOutlined";
 import FilterDropdown from "../../Components/FilterDropdown";
 import SearchDropdown from "../../Components/SearchDropdown";
+import {connect } from "react-redux";
+import { fetchMovies } from "../../Redux/movies/moviesAction";
+
 const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -77,9 +80,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DashboardLayout({ children }) {
+
+
+function DashboardLayout({ children,fetchMovies,movies }) {
   const classes = useStyles();
   const history = useHistory();
+  var [pageNo, setpageNo] = useState(1)
+  useEffect(() => {
+    fetchMovies(pageNo)
+  }, [])
+  console.log(movies);
   return (
     <>
       <AppBar position="static" color="transparent">
@@ -149,5 +159,13 @@ function DashboardLayout({ children }) {
   );
 }
 
-export default DashboardLayout;
+var action = {
+  fetchMovies
+}
+
+var mapState = (state) => ({
+  movies:state.movies
+})
+
+export default connect(mapState,action)(DashboardLayout);
 

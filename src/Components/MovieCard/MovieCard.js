@@ -4,6 +4,7 @@ import "./Movie.css"
 
 const MovieCard = (props) => {
     var {Title,Poster,imdbID}=props
+    console.log(props);
     return (
         <div>
             <Link to={`/movie/${imdbID}`}>

@@ -34,8 +34,8 @@ function App({firebaseAuthListner, auth, isLoading, handleLoader}) {
       <MuiThemeProvider theme={theme}>
         {isLoading ? <Loader/> : ''}
         <Switch>
-          <Route path="/" component={auth ? Home:Signin} exact />
-          <Route path="/signup" component={auth ? Home:Signup} exact />
+          <Route path="/" component={auth ? Dashboard:Signin} exact />
+          <Route path="/signup" component={auth ? Dashboard:Signup} exact />
           <Route path="/user" component={User} exact/>
           <Route path="/dashboard" component={Dashboard} exact/>
           <Route path="/auth" component={Auth} exact/>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+
 const Movie = ({movies, match:{params:{movieId}}}) => {
     var m = movies.find((movie)=> movie.imdbID===movieId)
     

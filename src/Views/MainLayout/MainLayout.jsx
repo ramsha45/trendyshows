@@ -78,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
 function MainLayout({ signout, children }) {
   const classes = useStyles();
   const history = useHistory();
-
   return (
     <>
       <AppBar position="static" color="secondary">
