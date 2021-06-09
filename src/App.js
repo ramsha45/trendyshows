@@ -1,10 +1,8 @@
 import './App.css';
 import { Switch,Route } from "react-router-dom";
-import Home from './Pages/Home/Home';
 import { useEffect } from "react";
 import { firebaseAuthListner } from "./Redux/auth/authAction";
 import { connect } from 'react-redux';
-import Auth from './Pages/Auth/Auth';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Movie from './Pages/Movie/Movie';
 import Signin from './Pages/Signin/Signin';
@@ -38,7 +36,6 @@ function App({firebaseAuthListner, auth, isLoading, handleLoader}) {
           <Route path="/signup" component={auth ? Dashboard:Signup} exact />
           <Route path="/user" component={User} exact/>
           <Route path="/dashboard" component={Dashboard} exact/>
-          <Route path="/auth" component={Auth} exact/>
           <Route path="/movie/:movieId" component={Movie} exact/>
           <Route path="*">
             <h1>404 Not Found</h1>

@@ -16,8 +16,9 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import PowerSettingsNewOutlinedIcon from "@material-ui/icons/PowerSettingsNewOutlined";
 import FilterDropdown from "../../Components/FilterDropdown";
 import SearchDropdown from "../../Components/SearchDropdown";
-import {connect } from "react-redux";
+import { connect } from "react-redux";
 import { fetchMovies } from "../../Redux/movies/moviesAction";
+import { signout } from "../../Redux/auth/authAction";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -71,7 +72,9 @@ const useStyles = makeStyles((theme) => ({
     color: "#000000",
   },
   children: {
-    backgroundColor: "#BA2F16",
+    // backgroundColor: "#BA2F16",
+    boxSizing: 'border-box',
+    padding: '32px 64px'
   },
   filterAppBar: {
     display: "flex",
@@ -80,16 +83,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
-function DashboardLayout({ children,fetchMovies,movies }) {
+function DashboardLayout({ children, fetchMovies, movies, signout }) {
   const classes = useStyles();
   const history = useHistory();
-  var [pageNo, setpageNo] = useState(1)
+  var [pageNo, setpageNo] = useState(1);
   useEffect(() => {
-    fetchMovies(pageNo)
-  }, [])
-  console.log(movies);
+    fetchMovies(pageNo);
+  }, []);
   return (
     <>
       <AppBar position="static" color="transparent">
@@ -129,12 +129,7 @@ function DashboardLayout({ children,fetchMovies,movies }) {
           >
             <AccountCircleOutlinedIcon />
           </IconButton>
-          <IconButton
-            className={classes.navItem}
-            onClick={() => {
-              handleNavigation("/user", history);
-            }}
-          >
+          <IconButton className={classes.navItem} onClick={signout}>
             <PowerSettingsNewOutlinedIcon />
           </IconButton>
         </Toolbar>
@@ -145,11 +140,8 @@ function DashboardLayout({ children,fetchMovies,movies }) {
             name="Genre"
             list={["horror", "comedy", "action", "Adventrue"]}
           />
-          <SearchDropdown/>
-          <FilterDropdown
-            name="Industry"
-            list={["Hollywood", "Bollywood"]}
-          />
+          <SearchDropdown />
+          <FilterDropdown name="Industry" list={["Hollywood", "Bollywood"]} />
         </Toolbar>
       </AppBar>
       <Grid container justify="center" className={classes.children}>
@@ -160,12 +152,9 @@ function DashboardLayout({ children,fetchMovies,movies }) {
 }
 
 var action = {
-  fetchMovies
-}
+  fetchMovies,
+  signout,
+};
 
-var mapState = (state) => ({
-  movies:state.movies
-})
 
-export default connect(mapState,action)(DashboardLayout);
-
+export default connect(null, action)(DashboardLayout);
