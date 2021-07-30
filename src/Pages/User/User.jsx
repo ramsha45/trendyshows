@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { connect } from "react-redux";
 import MainLayout from "../../Views/MainLayout/MainLayout";
+import { updateUser } from "../../Redux/auth/authAction";
 
 const useStyles = makeStyles((theme) => ({
   userDetails: {
@@ -23,6 +24,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function User({ auth }) {
+  // const [credentials, setCredentials] = useState({
+  //   userName: "",
+  //   gender: "",
+  // });
+  // const { userName, gender } = credentials;
+  // const handleFormInput = (e) => {
+  //   const { name, value } = e.target;
+  //   setCredentials((prevState) => ({
+  //     ...prevState,
+  //     [name]: value,
+  //   }));
+  // };
+
+
   const classes = useStyles();
   return (
     <MainLayout>
@@ -58,7 +73,7 @@ function User({ auth }) {
             id="outlined-basic"
             fullWidth
             placeholder="New email"
-            label={auth.email}
+            label="Gender"
             variant="outlined"
           />
         </Grid>
@@ -67,9 +82,17 @@ function User({ auth }) {
             Update
           </Button>
         </Grid>
+        <Grid item xs={12}>
+        </Grid>
+
       </Grid>
     </MainLayout>
   );
+}
+
+
+var action = {
+  updateUser
 }
 
 const mapStateToProps = (state) => {
@@ -77,4 +100,4 @@ const mapStateToProps = (state) => {
     auth: state.auth,
   };
 };
-export default connect(mapStateToProps)(User);
+export default connect(mapStateToProps,action)(User);

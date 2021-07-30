@@ -6,6 +6,9 @@ import {
   Select,
 } from "@material-ui/core";
 import React from "react";
+import { useEffect } from "react";
+import { connect } from "react-redux";
+import {fetchMovieByCategory, fetchMovies} from '../Redux/movies/moviesAction'
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -20,13 +23,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FilterDropdown({ name, list }) {
+function FilterDropdown({ name, list, fetchMovieByCategory, getMovies }) {
   const classes = useStyles();
   const [filter, setFilter] = React.useState("");
 
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
+
+  useEffect(() => {
+    if(getMovies) {
+      if(name == 'Industry') getMovies("Industry",filter)
+      else getMovies("Genre",filter)
+    }
+  }, [filter])
+
   return (
     <>
       <FormControl className={classes.formControl}>
@@ -53,4 +64,8 @@ function FilterDropdown({ name, list }) {
   );
 }
 
-export default FilterDropdown;
+var action = {
+  fetchMovieByCategory
+}
+
+export default connect(null,action)(FilterDropdown);

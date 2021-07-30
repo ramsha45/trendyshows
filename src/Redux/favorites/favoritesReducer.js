@@ -1,16 +1,18 @@
-import { SET_FAVS } from "../../Redux/favorites/favoritesConstant";
-initialState=[];
+import { ADD_TO_FAV} from "./authConstant";
 
-var favoritesReducer = (state=initialState, {type,payload}) => {
+var initialstate = null;
+
+var authReducer = (state=initialstate, action) => {
+    var {type, payload} = action;
     switch (type) {
-        case SET_FAVS:
-            
-            break;
-    
+        case ADD_TO_FAV:
+            return{
+                ...state,
+                favorites : [...state.favorites , ...payload.movieId]
+            }
         default:
             return state;
     }
-
 }
 
-export default favoritesReducer;
+export default authReducer;

@@ -6,8 +6,9 @@ export var fetchMovies = (pageNo=1) => async (dispatch) => {
         var movies = []
         var querry = await firestore.collection("movies").orderBy("id").limit(pageNo*10)
         var data = await querry.get()
+        // var data = await firestore.collection("movies").get()
         data.forEach(doc => {
-            movies.push(doc.data())
+            movies.push({...doc.data(), movid: doc.id})
         });
         dispatch({
             type:SET_MOVIES,
@@ -25,7 +26,7 @@ export var fetchMovieByTitle = (movieTitle) => async (dispatch) => {
         var movies = [];
         var querry = await  firestore.collection("movies").where("title", "==", movieTitle ).get();
         querry.forEach(doc => {
-            movies.push(doc.data())
+            movies.push({...doc.data(), movid: doc.id})
         });
         dispatch({
             type:SET_MOVIES,
@@ -38,12 +39,12 @@ export var fetchMovieByTitle = (movieTitle) => async (dispatch) => {
     }
 }
 
-export var fetchMovieByCategory = (category,pageNo) => async (dispatch) => {
+export var fetchMovieByCategory = (category) => async (dispatch) => {
     try {
         var movies = [];
-        var querry = await  firestore.collection("movies").where("category", "==", category).limit(pageNo*10).get();
+        var querry = await  firestore.collection("movies").where("category", "==", category ).get();
         querry.forEach(doc => {
-            movies.push(doc.data())
+            movies.push({...doc.data(), movid: doc.id})
         });
         dispatch({
             type:SET_MOVIES,
@@ -55,3 +56,22 @@ export var fetchMovieByCategory = (category,pageNo) => async (dispatch) => {
         console.log(error)
     }
 }
+
+export var fetchMovieByGenre = (genre) => async (dispatch) => {
+    try {
+        var movies = [];
+        var querry = await  firestore.collection("movies").where("genres", "array-contains", genre ).get();
+        querry.forEach(doc => {
+            movies.push({...doc.data(), movid: doc.id})
+        });
+        dispatch({
+            type:SET_MOVIES,
+            payload:{
+                movies
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+

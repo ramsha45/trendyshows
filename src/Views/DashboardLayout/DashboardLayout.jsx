@@ -17,7 +17,7 @@ import PowerSettingsNewOutlinedIcon from "@material-ui/icons/PowerSettingsNewOut
 import FilterDropdown from "../../Components/FilterDropdown";
 import SearchDropdown from "../../Components/SearchDropdown";
 import { connect } from "react-redux";
-import { fetchMovies } from "../../Redux/movies/moviesAction";
+import { fetchMovies,fetchMovieByTitle } from "../../Redux/movies/moviesAction";
 import { signout } from "../../Redux/auth/authAction";
 
 const useStyles = makeStyles((theme) => ({
@@ -83,10 +83,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DashboardLayout({ children, fetchMovies, movies, signout }) {
+function DashboardLayout({ children, fetchMovies,fetchMovieByTitle, movies, signout, getMovies }) {
   const classes = useStyles();
   const history = useHistory();
+  const [searchInput, setSearchInput] = useState('')
   var [pageNo, setpageNo] = useState(1);
+  
+  const handleSearchInput = (e) => {
+    setSearchInput(e.target.value)
+  }
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    getMovies("Title", searchInput)
+  }
   useEffect(() => {
     fetchMovies(pageNo);
   }, []);
@@ -109,14 +119,25 @@ function DashboardLayout({ children, fetchMovies, movies, signout }) {
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <InputBase
+            {/* <InputBase
               placeholder="Films, Actors"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
-            />
+              onChange={handleSearchInput}
+            /> */}
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Films, Actors"
+                // inputProps={{ "aria-label": "search" }}
+                value={searchInput}
+                onChange={handleSearchInput}
+              />
+              <button type="submit">Search</button>
+            </form>
           </div>
           <Typography className={classes.title} variant="h6" noWrap>
             Trendy Shows
@@ -138,10 +159,14 @@ function DashboardLayout({ children, fetchMovies, movies, signout }) {
         <Toolbar className={classes.filterAppBar}>
           <FilterDropdown
             name="Genre"
-            list={["horror", "comedy", "action", "Adventrue"]}
+            list={["Horror", "Comedy", "Action", "Adventure", "Drama", "Crime"]}
+            getMovies={getMovies} 
           />
           <SearchDropdown />
-          <FilterDropdown name="Industry" list={["Hollywood", "Bollywood"]} />
+          <FilterDropdown name="Industry"
+            list={["hollywood", "bollywood"]}
+            getMovies={getMovies} 
+          />
         </Toolbar>
       </AppBar>
       <Grid container justify="center" className={classes.children}>
@@ -154,6 +179,7 @@ function DashboardLayout({ children, fetchMovies, movies, signout }) {
 var action = {
   fetchMovies,
   signout,
+  fetchMovieByTitle
 };
 
 
