@@ -1,37 +1,48 @@
-import React from 'react'
-import { useEffect } from 'react'
-import MovieList from '../../Components/MovieList/MovieList';
-import Search from '../../Components/Search/Search';
-import { setMovies } from "../../Redux/movies/moviesAction";
-import { connect } from 'react-redux';
-import Signout from '../../Components/Signout/Signout';
+import React, { useEffect, useState } from 'react'
+import {    connect} from 'react-redux';
+import DashboardLayout from '../../Views/DashboardLayout/DashboardLayout'
+import { fetchMovies, fetchMovieByCategory, fetchMovieByTitle, fetchMovieByGenre } from "../../Redux/movies/moviesAction";
+import MovieCard from '../../Components/MovieCard';
+import { Grid } from '@material-ui/core';
 
-const Dashboard = ({setMovies,movies}) => {
-    var fetchData = async() => {
-        var res = await fetch("http://www.omdbapi.com/?apikey=2f009254&s=superman");
-        var data = await res.json()
-        console.log(data.Search)
-        setMovies(data.Search)
+function Dashboard({user, movies, fetchMovies, fetchMovieByTitle, fetchMovieByCategory, fetchMovieByGenre}) {
+    const getMovies = (searchBy, searchItem) => {
+        if (searchBy=="Industry") fetchMovieByCategory(searchItem);
+        else if(searchBy == "Title") fetchMovieByTitle(searchItem);
+        else if(searchBy == "Genre") fetchMovieByGenre(searchItem)
     }
-    useEffect(() => {
-        console.log("here")
-        fetchData()
-    }, [])
-    return (
-        <div>
-            <h1>Dashboard Page</h1>
-            <Search/>
-            <Signout/>
-            <MovieList/>
-        </div>
+    const isfavorite = (id) => {
+        return( user?.favorites?.find(x => x === id) ? true :false )
+    }
+    return ( <DashboardLayout getMovies={getMovies}>
+            <Grid container justify="center" spacing={5}>
+                {
+                    movies.map((movie)=>{
+                        return(
+                            <Grid item xs={6} md={3}>
+                            <MovieCard 
+                                movie={movie} 
+                                isFav={isfavorite(movie.movid)}
+                            />
+                            </Grid>
+                        )
+                    })
+                }    
+            </Grid>
+    </DashboardLayout> 
     )
 }
 
-var actions = {
-    setMovies
-}
 var mapState = (state) => ({
-    movies: state.movies
+    movies: state.movies,
+    user: state.auth
 })
+var action = {
+    fetchMovies,
+    fetchMovieByCategory,
+    fetchMovieByTitle,
+    fetchMovieByGenre
+}
 
-export default connect(mapState,actions)(Dashboard)
+
+export default connect(mapState,action)(Dashboard)

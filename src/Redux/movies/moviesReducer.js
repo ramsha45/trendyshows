@@ -5,7 +5,7 @@ var initialState = []
 var moviesReducer= (state=initialState,{type,payload}) => {
     switch (type) {
         case SET_MOVIES:
-            return payload.movies
+            return [...payload.movies]
         default:
             return state;
     }
